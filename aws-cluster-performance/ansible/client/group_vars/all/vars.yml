@@ -1,0 +1,5 @@
+hostname: zeebe-startinstance
+zeebe_jar: /tmp/zeebe-nonblocking-start.jar
+zeebe_client_contactpoint: "{{hostvars[groups['tag_zeebe_broker_true'][0]]['ec2_public_dns_name']+':51015'}}"
+nexus_url: https://oss.sonatype.org
+ansible_python_interpreter: /usr/bin/python3

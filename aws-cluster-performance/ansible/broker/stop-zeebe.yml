@@ -1,0 +1,8 @@
+---
+- hosts: all
+  tasks:
+      - name: Ensure Zeebe systemd service is stopped
+        become: yes
+        systemd:
+            name: zeebe
+            state: stopped

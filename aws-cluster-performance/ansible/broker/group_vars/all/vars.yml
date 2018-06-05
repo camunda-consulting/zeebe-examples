@@ -1,0 +1,15 @@
+---
+ansible_user: ubuntu
+ansible_group: ubuntu
+ansible_python_interpreter: /usr/bin/python3
+zeebe_extr_dir: /opt/zeebe
+zeebe_dir: "{{ zeebe_extr_dir }}/zeebe-broker-0.10.0-SNAPSHOT"
+#zeebe_dir: "{{ zeebe_extr_dir }}/zeebe-broker-0.7.0"
+zeebe_data_dir: "{{ zeebe_dir }}/data"
+zeebe_log_dir: "{{ zeebe_dir }}/logs"
+zeebe_host: "{{ec2_public_dns_name}}"
+hostname: "{{ec2_id}}"
+# Only one broker should do the bootstrap, for now we leave the system topic on one broker node
+bootstrap: "{% if hostvars[groups['all'][0]]['ec2_public_dns_name'] == ec2_public_dns_name %}1{% else %}0{% endif %}"
+# This looks difficult, but for now we need to make sure that each broker only specifies other broker nodes
+zeebe_contact_points: "{% set IP_ARR=[] %}{% if hostvars[groups['all'][0]]['ec2_public_dns_name'] == ec2_public_dns_name %}{{ ' [' + IP_ARR|join('\", \"') + ']'}}{% else %}{% for host in groups['all'] %}{% if ec2_public_dns_name != hostvars[host]['ec2_public_dns_name']%}{% if IP_ARR.insert(loop.index,(hostvars[host]['ec2_public_dns_name']+':51016')) %}{% endif %}{% endif %}{% endfor %}{{ ' [\"' + IP_ARR|join('\", \"') + '\"]'}}{% endif %}"

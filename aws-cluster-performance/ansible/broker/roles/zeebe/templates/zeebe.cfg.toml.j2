@@ -1,0 +1,40 @@
+# Global configuration --------------------------------
+bootstrap = {{ bootstrap }}
+[global]
+directory = "{{ zeebe_data_dir }}"
+
+# Networking configuration ----------------------------
+
+[network]
+host = "{{ zeebe_host }}"
+
+[network.client]
+#host = "{{ zeebe_client_host }}"
+port = {{ zeebe_client_port }}
+
+[network.management]
+#host = "{{ zeebe_management_host }}"
+port = {{ zeebe_management_port }}
+
+[network.replication]
+#host = "{{ zeebe_replication_host }}"
+port = {{ zeebe_replication_port }}
+
+[cluster]
+initialContactPoints = {{ zeebe_contact_points | safe }}
+
+# System Configuration --------------------------------
+
+[threads]
+cpuThreadCount = 6
+ioThreadCount = 2
+
+# Log Configuration -----------------------------------
+
+[logs]
+
+# Workflow Configuration ------------------------------------------
+
+[workflow]
+deploymentCacheSize = 1024
+payloadCacheSize = 4096

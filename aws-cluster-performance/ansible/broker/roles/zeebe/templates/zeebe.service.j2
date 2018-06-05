@@ -1,0 +1,15 @@
+[Unit]
+Description=Zeebe Broker
+After=network.target
+
+[Service]
+WorkingDirectory={{ zeebe_dir }}/bin
+ExecStart={{ zeebe_dir }}/bin/broker
+SuccessExitStatus=143
+
+User={{ zeebe_user }}
+Group={{ zeebe_group }}
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

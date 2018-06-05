@@ -1,0 +1,19 @@
+- name: Set {{ os_timezone }} timezone
+  become: yes
+  shell: timedatectl set-timezone {{ os_timezone }}
+
+- name: Set locale to LANG={{ os_lang }}, LANGUAGE={{ os_language }}
+  become: yes
+  shell: localectl set-locale LANG={{ os_lang }} LANGUAGE={{ os_language}}
+
+- name: Ensure hostname is set
+  become: yes
+  hostname:
+    name: "{{ hostname }}"
+
+- name: Ensure firewall is disabled
+  become: yes
+  systemd:
+    name: ufw
+    enabled: no
+    state: stopped

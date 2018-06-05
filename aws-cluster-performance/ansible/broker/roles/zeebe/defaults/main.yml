@@ -1,0 +1,24 @@
+# user and group which runs the service and owns the installation directory
+zeebe_user: ubuntu
+zeebe_group: ubuntu
+
+# specifies the version which should be downloaded, currently 0.10.0-SNAPSHOT
+zeebe_version: 0.10.0-SNAPSHOT
+#zeebe_version: 0.10.0
+zeebe_tar_gz: /tmp/zeebe-distribution.tar.gz
+
+# nexus url and credentials
+#nexus_url: https://repository.sonatype.org
+nexus_url: https://app.camunda.com/nexus
+#nexus_zeebe_repository: zeebe-io
+nexus_zeebe_repository: zeebe-io-snapshots
+
+# zeebe configuration
+zeebe_log_level: debug
+zeebe_client_host: "{{ zeebe_host }}"
+zeebe_client_port: 51015
+zeebe_management_host: "{{ zeebe_host }}"
+zeebe_management_port: 51016
+zeebe_replication_host: "{{ zeebe_host }}"
+zeebe_replication_port: 51017
+zeebe_contact_points: []

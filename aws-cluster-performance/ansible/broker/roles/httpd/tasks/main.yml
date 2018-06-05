@@ -1,0 +1,9 @@
+- name: Ensure httpd is installed
+  become: yes
+  apt: pkg=apache2 state=latest update_cache=yes
+
+- name: Enable apache service
+  service: >
+    name=apache2
+    state=started
+    enabled=yes

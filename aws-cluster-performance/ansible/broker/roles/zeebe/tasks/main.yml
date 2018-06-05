@@ -1,0 +1,107 @@
+- name: Ensure Zeebe broker systemd service unit exists
+  become: yes
+  template:
+    src: zeebe.service.j2
+    dest: /etc/systemd/system/zeebe.service
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Ensure Zeebe systemd service is disabled and stopped
+  become: yes
+  systemd:
+    name: zeebe
+    state: stopped
+    enabled: no
+    daemon_reload: yes
+
+- name: Remove old Zeebe download
+  become: yes
+  file:
+    path: "{{ zeebe_tar_gz }}"
+    state: absent
+
+- name: Download tarball of Zeebe distribution
+  get_url:
+    url: "{{ nexus_url }}/service/local/artifact/maven/redirect?r={{ nexus_zeebe_repository }}&g=io.zeebe&a=zeebe-distribution&v={{ zeebe_version }}&e=tar.gz"
+    #url: "{{ nexus_url }}/service/local/artifact/maven/content?r=central-proxy&g=io.zeebe&a=zeebe-distribution&e=tar.gz&v={{ zeebe_version }}"
+    dest: "{{ zeebe_tar_gz }}"
+
+- name: Remove old Zeebe distribution
+  become: yes
+  file:
+    path: "{{ zeebe_extr_dir }}"
+    state: absent
+
+- name: Create Zeebe installation directory
+  become: yes
+  file:
+    path: "{{ zeebe_extr_dir }}"
+    owner: "{{ zeebe_user }}"
+    group: "{{ zeebe_group }}"
+    state: directory
+
+- name: Unarchive tarball of Zeebe distribution
+  become: yes
+  unarchive:
+    src: "{{ zeebe_tar_gz }}"
+    dest: "{{ zeebe_extr_dir }}"
+    owner: "{{ zeebe_user }}"
+    remote_src: yes
+
+- name: Create Zeebe configuration
+  template:
+    src: zeebe.cfg.toml.j2
+    dest: "{{ zeebe_dir }}/conf/zeebe.cfg.toml"
+    owner: "{{ zeebe_user }}"
+    group: "{{ zeebe_group }}"
+
+- name: Create Zeebe log configuration
+  template:
+    src: log4j2.xml.j2
+    dest: "{{ zeebe_dir }}/conf/log4j2.xml"
+    owner: "{{ zeebe_user }}"
+    group: "{{ zeebe_group }}"
+
+- name: Delete Apache directory
+  become: yes
+  file:
+    path: "/var/www/html/"
+    state: absent
+
+- name: Create Zeebe metrics directory
+  become: yes
+  file:
+    path: "/var/www/html/"
+    state: directory
+    owner: "{{ zeebe_user }}"
+    group: "{{ zeebe_group }}"
+
+- name: Delete Apache directory
+  become: yes
+  file:
+    path: "{{ zeebe_dir }}/metrics"
+    state: absent
+
+- name: Ensure Zeebe systemd service is stoppped
+  become: yes
+  systemd:
+      name: apache2
+      state: stopped
+
+- name: setup symlink
+  file:
+    src: "{{ zeebe_dir }}{{item.dest}}"
+    path: "{{ item.path }}"
+    state: link
+    force: yes
+    follow: false
+  become_user: "{{ zeebe_user }}"
+  with_items:
+    - { path: '/var/www/html/zeebe.prom', dest: '/metrics/zeebe.prom' }
+
+- name: Ensure Zeebe systemd service is started
+  become: yes
+  systemd:
+      name: apache2
+      state: started

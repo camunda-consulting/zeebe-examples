@@ -1,0 +1,14 @@
+[Unit]
+Description=Zeebe Start Instance Client
+After=network.target
+
+[Service]
+WorkingDirectory=/tmp/
+ExecStart=/usr/bin/java -jar zeebe-nonblocking-start.jar
+SuccessExitStatus=143
+
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

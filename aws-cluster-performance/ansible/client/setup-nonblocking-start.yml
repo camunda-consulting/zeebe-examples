@@ -1,0 +1,6 @@
+---
+- hosts: tag_start_client_true
+  roles:
+    - common
+    - java
+    - zeebe-startinstance-client

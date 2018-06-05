@@ -1,0 +1,26 @@
+---
+- hosts: tag_start_client_true
+  tasks:
+      - name: Ensure startinstance systemd service 1 is stoppped
+        become: yes
+        systemd:
+            name: startinstance
+            state: stopped
+
+      - name: Ensure startinstance systemd service 1 is started
+        become: yes
+        systemd:
+            name: startinstance
+            state: started
+
+      - name: Ensure startinstance systemd service 2 is stoppped
+        become: yes
+        systemd:
+            name: startinstance2
+            state: stopped
+
+      - name: Ensure startinstance systemd service 2 is started
+        become: yes
+        systemd:
+            name: startinstance2
+            state: started

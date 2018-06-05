@@ -1,0 +1,28 @@
+---
+- hosts: all
+  tasks:
+      - name: Ensure Zeebe systemd service is stoppped
+        become: yes
+        systemd:
+            name: zeebe
+            state: stopped
+
+      - name: Ensure Zeebe data directory is deleted
+        file:
+            path: "{{ zeebe_data_dir }}"
+            state: absent
+        tags:
+            - clean
+
+      - name: Ensure Zeebe log directory is deleted
+        file:
+            path: "{{ zeebe_log_dir }}"
+            state: absent
+        tags:
+            - clean
+
+      - name: Ensure Zeebe systemd service is started
+        become: yes
+        systemd:
+            name: zeebe
+            state: started

@@ -1,0 +1,7 @@
+- name: Ensure openjdk {{ java_version }} is installed
+  become: yes
+  apt: pkg=openjdk-8-jdk state=latest update_cache=yes
+
+- name: Ensure tar is installed
+  become: yes
+  apt: pkg=zip state=latest update_cache=yes

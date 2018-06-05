@@ -1,0 +1,53 @@
+- name: Ensure startinstance systemd service unit exists
+  become: yes
+  template:
+    src: startinstance.service.j2
+    dest: /etc/systemd/system/startinstance.service
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Ensure startinstance 2 systemd service unit exists
+  become: yes
+  template:
+    src: startinstance.service.j2
+    dest: /etc/systemd/system/startinstance2.service
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Ensure startinstance service is disabled and stopped
+  become: yes
+  systemd:
+    name: startinstance
+    state: stopped
+    enabled: no
+    daemon_reload: yes
+
+- name: Ensure startinstance2 service is disabled and stopped
+  become: yes
+  systemd:
+    name: startinstance2
+    state: stopped
+    enabled: no
+    daemon_reload: yes
+
+- name: Remove old Zeebe Start Instance Client
+  become: yes
+  file:
+    path: "{{ zeebe_jar }}"
+    state: absent
+
+- name: Download jar of Zeebe Start Instance Client
+  get_url:
+    url: "{{ nexus_url }}/service/local/artifact/maven/content?r=snapshots&g=com.camunda.example&a=zeebe-nonblocking-start&e=jar&v=0.0.1-SNAPSHOT"
+    dest: "{{ zeebe_jar }}"
+
+- name: Ensure config is there
+  become: yes
+  template:
+    src: config.properties
+    dest: /tmp/config.properties
+    owner: root
+    group: root
+    mode: 0644
