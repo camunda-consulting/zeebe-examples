@@ -38,9 +38,9 @@ Here you find ansible scripts to setup your Zeebe Cluster in a repeatable manner
 You should run the scripts as follows:
 
 ```sh
-ansible-playbook setup.yml --private-key=./zeebe.pem -e 'ansible_python_interpreter=/usr/bin/python3'
-ansible-playbook zeebe.yml --private-key=./zeebe.pem -e 'ansible_python_interpreter=/usr/bin/python3'
-ansible-playbook restart-zeebe.yml --private-key=./zeebe.pem -e 'ansible_python_interpreter=/usr/bin/python3'
+ansible-playbook setup.yml
+ansible-playbook zeebe.yml
+ansible-playbook restart-zeebe.yml
 ```
 
 Note that the playbook 'restart-zeebe' removes the data directory and basically gives you a fresh zeebe cluster with correct configuration.
@@ -49,20 +49,20 @@ Note that the playbook 'restart-zeebe' removes the data directory and basically 
 Here you find ansible scripts to setup your Zeebe Client which are responsible for starting instances.
 You should run the scripts as follows:
 ```sh
-ansible-playbook setup-nonblocking-start.yml --private-key=./zeebe.pem -e 'ansible_python_interpreter=/usr/bin/python3'
+ansible-playbook setup-nonblocking-start.yml
 ```
 
-Once your zeebe cluster is running (you successfully executed ansible-playbook restart-zeebe), you will need to create a new topic and deploy your workflow.
-You can do so, using either [zbctl](https://github.com/zeebe-io/zbctl) or use the Zeebe Java Client. You can find an example in the folder monitoring.
+Once your zeebe cluster is running (you successfully executed ansible-playbook restart-zeebe.yml), you will need to create a new topic and deploy your workflow.
+You can do so, using either [zbctl](https://github.com/zeebe-io/zbctl) or using the Zeebe Java Client. You can find an example in the folder `deployment`. Just run the App.java.
 
 Once you successfully created a new topic and a deployment, you should run the next ansible-playbook to start your clients which create instances without blocking:
 ```sh
-ansible-playbook restart-nonblocking-start.yml --private-key=./zeebe.pem -e 'ansible_python_interpreter=/usr/bin/python3'
+ansible-playbook restart-nonblocking-start.yml
 ```
 
 After a few minutes probably your disks will be full, so consider stopping the clients before that:
 ```sh
-ansible-playbook stop-nonblocking-start.yml --private-key=./zeebe.pem -e 'ansible_python_interpreter=/usr/bin/python3'
+ansible-playbook stop-nonblocking-start.yml
 ```
 
 ### Monitoring
