@@ -53,7 +53,7 @@ ansible-playbook setup-nonblocking-start.yml
 ```
 
 Once your zeebe cluster is running (you successfully executed ansible-playbook restart-zeebe.yml), you will need to create a new topic and deploy your workflow.
-You can do so, using either [zbctl](https://github.com/zeebe-io/zbctl) or using the Zeebe Java Client. You can find an example in the folder `deployment`. Just run the App.java.
+You can do so, using either [zbctl](https://github.com/zeebe-io/zbctl) or using the Zeebe Java Client. You can find an example in the folder `deployment`. In the file App.java you need to specify one zeebe broker contact point and then just run the App.java.
 
 Once you successfully created a new topic and a deployment, you should run the next ansible-playbook to start your clients which create instances without blocking:
 ```sh
