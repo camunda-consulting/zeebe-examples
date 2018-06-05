@@ -75,3 +75,7 @@ And then run it with
 and checkout the Zeebe Dashboard in Grafana on
 localhost:3000 in your browser (Credentials: admin / admin).
 The top left report sums the instances of all nodes that you configure automatically and shows you how many instances have been started per second.
+
+Grafana could look likes this:
+![grafana.png](grafana.png)
+In this example we run 30 brokers with 20 clients and 120 partitions - replication 1.
