@@ -70,7 +70,7 @@ For monitoring the number of instances started, we use Prometheus and Grafana.
 
 For sake of simplicity we run both with docker-compose. All the AWS instances expose Zeebe Metrics that Prometheus will read from automatically.
 
-All you need to do is to add the AWS addresses to:
+All you need to do is to add the AWS addresses to the `static_configs` parameter in the `monitoring/prometheus.yml` file.
 
 And then run it with
 `docker-compose up -d`
