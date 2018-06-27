@@ -3,7 +3,7 @@ ansible_user: ubuntu
 ansible_group: ubuntu
 ansible_python_interpreter: /usr/bin/python3
 zeebe_extr_dir: /opt/zeebe
-zeebe_dir: "{{ zeebe_extr_dir }}/zeebe-broker-0.10.0-SNAPSHOT"
+zeebe_dir: "{{ zeebe_extr_dir }}/zeebe-broker-0.10.1"
 #zeebe_dir: "{{ zeebe_extr_dir }}/zeebe-broker-0.7.0"
 zeebe_data_dir: "{{ zeebe_dir }}/data"
 zeebe_log_dir: "{{ zeebe_dir }}/logs"

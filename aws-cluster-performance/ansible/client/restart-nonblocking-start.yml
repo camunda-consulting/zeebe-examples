@@ -24,3 +24,15 @@
         systemd:
             name: startinstance2
             state: started
+
+      - name: Ensure startinstance systemd service 3 is stoppped
+        become: yes
+        systemd:
+            name: startinstance3
+            state: stopped
+
+      - name: Ensure startinstance systemd service 3 is started
+        become: yes
+        systemd:
+            name: startinstance3
+            state: started

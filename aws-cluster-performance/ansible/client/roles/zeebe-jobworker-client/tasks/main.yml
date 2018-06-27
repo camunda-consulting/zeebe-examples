@@ -1,0 +1,89 @@
+- name: Ensure jobworker1 systemd service unit exists
+  become: yes
+  template:
+    src: jobworker1.service.j2
+    dest: /etc/systemd/system/jobworker1.service
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Ensure jobworker 2 systemd service unit exists
+  become: yes
+  template:
+    src: jobworker2.service.j2
+    dest: /etc/systemd/system/jobworker2.service
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Ensure jobworker1 service is disabled and stopped
+  become: yes
+  systemd:
+    name: jobworker1
+    state: stopped
+    enabled: no
+    daemon_reload: yes
+
+- name: Ensure jobworker2 service is disabled and stopped
+  become: yes
+  systemd:
+    name: jobworker2
+    state: stopped
+    enabled: no
+    daemon_reload: yes
+
+- name: Remove old Zeebe Job Worker 1 Client
+  become: yes
+  file:
+    path: "{{ zeebe_jar1 }}"
+    state: absent
+
+- name: Remove old Zeebe Job Worker 2 Client
+  become: yes
+  file:
+    path: "{{ zeebe_jar2 }}"
+    state: absent
+
+- name: Create Zeebe JobWorker 1 directory
+  become: yes
+  file:
+    path: "/tmp/1"
+    owner: "{{ zeebe_user }}"
+    group: "{{ zeebe_group }}"
+    state: directory
+
+- name: Create Zeebe JobWorker 2 directory
+  become: yes
+  file:
+    path: "/tmp/2"
+    owner: "{{ zeebe_user }}"
+    group: "{{ zeebe_group }}"
+    state: directory
+
+- name: Download jar of Zeebe Job Worker 1 Client
+  get_url:
+    url: "{{ nexus_url }}/service/local/artifact/maven/content?r=snapshots&g=com.camunda.example&a=zeebe-nonblocking-jobworker&e=jar&v=0.0.1-SNAPSHOT"
+    dest: "{{ zeebe_jar1 }}"
+
+- name: Download jar of Zeebe Job Worker 2 Client
+  get_url:
+    url: "{{ nexus_url }}/service/local/artifact/maven/content?r=snapshots&g=com.camunda.example&a=zeebe-nonblocking-jobworker&e=jar&v=0.0.1-SNAPSHOT"
+    dest: "{{ zeebe_jar2 }}"
+
+- name: Ensure config 1 is there
+  become: yes
+  template:
+    src: config1.properties
+    dest: /tmp/1/config.properties
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Ensure config 2 is there
+  become: yes
+  template:
+    src: config2.properties
+    dest: /tmp/2/config.properties
+    owner: root
+    group: root
+    mode: 0644

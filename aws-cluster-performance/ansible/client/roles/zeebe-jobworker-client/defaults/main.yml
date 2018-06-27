@@ -1,0 +1,4 @@
+zeebe_jar1: /tmp/1/zeebe-nonblocking-jobworker.jar
+zeebe_jar2: /tmp/2/zeebe-nonblocking-jobworker.jar
+zeebe_user: ubuntu
+zeebe_group: ubuntu

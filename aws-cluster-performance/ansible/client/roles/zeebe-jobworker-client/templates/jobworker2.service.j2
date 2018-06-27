@@ -1,0 +1,14 @@
+[Unit]
+Description=Zeebe Job Worker Client
+After=network.target
+
+[Service]
+WorkingDirectory=/tmp/2/
+ExecStart=/usr/bin/java -jar zeebe-nonblocking-jobworker.jar
+SuccessExitStatus=143
+
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

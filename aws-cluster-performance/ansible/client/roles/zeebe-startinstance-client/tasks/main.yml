@@ -16,6 +16,15 @@
     group: root
     mode: 0644
 
+- name: Ensure startinstance 3 systemd service unit exists
+  become: yes
+  template:
+    src: startinstance.service.j2
+    dest: /etc/systemd/system/startinstance3.service
+    owner: root
+    group: root
+    mode: 0644
+
 - name: Ensure startinstance service is disabled and stopped
   become: yes
   systemd:
@@ -28,6 +37,14 @@
   become: yes
   systemd:
     name: startinstance2
+    state: stopped
+    enabled: no
+    daemon_reload: yes
+
+- name: Ensure startinstance3 service is disabled and stopped
+  become: yes
+  systemd:
+    name: startinstance3
     state: stopped
     enabled: no
     daemon_reload: yes

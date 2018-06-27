@@ -76,5 +76,28 @@ resource "aws_instance" "zeebe-broker" {
   key_name = "${aws_key_pair.auth.id}"
 
   # This will create 4 instances
-  count = 1
+  count = 4
+}
+
+resource "aws_instance" "zeebe-jobworker" {
+  instance_type = "c4.2xlarge"
+  ami           = "${var.aws_amis}"
+
+  ebs_block_device {
+    device_name = "/dev/sda1"
+    volume_size = 25
+    volume_type = "gp2"
+    delete_on_termination = true
+  }
+
+  tags {
+    "jobworker_client" = "true"
+  }
+
+  vpc_security_group_ids = ["${aws_security_group.default.id}"]
+
+  key_name = "${aws_key_pair.auth.id}"
+
+  # This will create 4 instances
+  count = 4
 }

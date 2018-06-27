@@ -14,7 +14,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "5.0.0"
+      "version": "5.0.3"
     },
     {
       "type": "panel",
@@ -53,7 +53,7 @@
   "gnetId": 5237,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1521816913112,
+  "iteration": 1530084329405,
   "links": [],
   "panels": [
     {
@@ -79,8 +79,8 @@
         "max": false,
         "min": false,
         "show": true,
-        "total": false,
-        "values": false
+        "total": true,
+        "values": true
       },
       "lines": true,
       "linewidth": 2,
@@ -107,7 +107,7 @@
       "thresholds": [],
       "timeFrom": null,
       "timeShift": null,
-      "title": "Workflow instance events ($topic)",
+      "title": "Workflow instance events started ($topic)",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -148,7 +148,6 @@
       "dashes": false,
       "datasource": "DS_PROMETHEUS",
       "decimals": 1,
-      "description": "",
       "fill": 1,
       "gridPos": {
         "h": 9,
@@ -156,15 +155,17 @@
         "x": 12,
         "y": 0
       },
-      "id": 6,
+      "id": 9,
       "legend": {
+        "alignAsTable": false,
         "avg": false,
         "current": false,
+        "hideZero": false,
         "max": false,
         "min": false,
         "show": true,
-        "total": false,
-        "values": false
+        "total": true,
+        "values": true
       },
       "lines": true,
       "linewidth": 2,
@@ -176,21 +177,22 @@
       "renderer": "flot",
       "seriesOverrides": [],
       "spaceLength": 10,
-      "stack": false,
+      "stack": true,
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(rate(zb_storage_fs_total_bytes{cluster=\"$cluster\",topic=\"$topic\"}[15s])) without (partition)",
+          "expr": "sum(rate(zb_workflow_instance_events_count{cluster=\"$cluster\",topic=\"$topic\",type=\"completed\"}[15s])) by (cluster)",
           "format": "time_series",
+          "instant": false,
           "intervalFactor": 1,
-          "legendFormat": "filesystem",
+          "legendFormat": "Cluster",
           "refId": "A"
         }
       ],
       "thresholds": [],
       "timeFrom": null,
       "timeShift": null,
-      "title": "Storage write throughput ($topic)",
+      "title": "Workflow instance events completed ($topic)",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -207,8 +209,8 @@
       "yaxes": [
         {
           "decimals": 1,
-          "format": "Bps",
-          "label": "Write throughput",
+          "format": "ops",
+          "label": "Events/s",
           "logBase": 1,
           "max": null,
           "min": "0",
@@ -313,6 +315,89 @@
       ]
     },
     {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "DS_PROMETHEUS",
+      "decimals": 1,
+      "description": "",
+      "fill": 1,
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 9
+      },
+      "id": 6,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 2,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "sum(rate(zb_storage_fs_total_bytes{cluster=\"$cluster\",topic=\"$topic\"}[15s])) without (partition)",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "filesystem",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Storage write throughput ($topic)",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "decimals": 1,
+          "format": "Bps",
+          "label": "Write throughput",
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": false
+        }
+      ]
+    },
+    {
       "cacheTimeout": null,
       "colorBackground": false,
       "colorValue": false,
@@ -336,7 +421,7 @@
         "h": 3,
         "w": 7,
         "x": 12,
-        "y": 9
+        "y": 18
       },
       "id": 4,
       "interval": null,
@@ -395,6 +480,7 @@
       "valueName": "current"
     }
   ],
+  "refresh": false,
   "schemaVersion": 16,
   "style": "dark",
   "tags": [
@@ -446,8 +532,8 @@
     ]
   },
   "time": {
-    "from": "now-15m",
-    "to": "now"
+    "from": "2018-06-27T07:26:00.000Z",
+    "to": "2018-06-27T07:35:00.000Z"
   },
   "timepicker": {
     "refresh_intervals": [
@@ -477,5 +563,5 @@
   "timezone": "",
   "title": "Zeebe",
   "uid": "NxsrK5kiz",
-  "version": 5
+  "version": 1
 }

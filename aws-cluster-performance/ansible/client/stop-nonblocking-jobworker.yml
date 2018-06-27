@@ -1,0 +1,14 @@
+---
+- hosts: tag_jobworker_client_true
+  tasks:
+      - name: Ensure jobworker systemd service 1 is stoppped
+        become: yes
+        systemd:
+            name: jobworker1
+            state: stopped
+
+      - name: Ensure jobworker systemd service 2 is stoppped
+        become: yes
+        systemd:
+            name: jobworker2
+            state: stopped
